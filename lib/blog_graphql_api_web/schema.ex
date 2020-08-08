@@ -1,9 +1,32 @@
 defmodule BlogGraphqlApiWeb.Schema do
   use Absinthe.Schema
 
-  alias BlogGraphqlApiWeb.BlogResolver
+  alias BlogGraphqlApiWeb.{BlogResolver, AuthorResolver}
 
   import_types(BlogGraphqlApiWeb.DataTypes)
+
+  object :post do
+    field :id, :id
+    field :author, :string
+    field :description, :string
+    field :title, :string
+    field :likes, :integer
+
+    field :get_author, :author do
+      resolve(&AuthorResolver.get_author/3)
+    end
+  end
+
+  object :author do
+    field :id, :id
+    field :first_name, :string
+    field :last_name, :string
+    field :age, :integer
+
+    field :posts, :post |> list_of do
+      resolve(&BlogResolver.list_post_by_id/3)
+    end
+  end
 
   query do
     @desc "Get all posts"
@@ -19,6 +42,18 @@ defmodule BlogGraphqlApiWeb.Schema do
       arg(:id, :id |> non_null)
 
       resolve(&BlogResolver.get_post/3)
+    end
+
+    @desc "Get list of authors"
+    field :get_authors, :author |> list_of do
+      resolve(&AuthorResolver.list_author/3)
+    end
+
+    @desc "Get author by id"
+    field :get_author, :author do
+      arg(:id, :id |> non_null)
+
+      resolve(&AuthorResolver.get_author/3)
     end
   end
 
@@ -43,6 +78,15 @@ defmodule BlogGraphqlApiWeb.Schema do
       arg(:id, :id |> non_null)
 
       resolve(&BlogResolver.delete_post/3)
+    end
+
+    @desc "Register author"
+    field :register, :author do
+      arg(:first_name, :string |> non_null)
+      arg(:last_name, :string |> non_null)
+      arg(:age, :integer |> non_null)
+
+      resolve(&AuthorResolver.register/3)
     end
   end
 end

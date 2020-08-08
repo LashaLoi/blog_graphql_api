@@ -6,6 +6,10 @@ defmodule BlogGraphqlApiWeb.BlogResolver do
 
   def list_post(_parent, _params, _info), do: {:ok, Blog.list_post()}
 
+  def list_post_by_id(%{id: id}, _paranm, _info) do
+    {:ok, Blog.list_post() |> Enum.filter(fn %{author_id: author_id} -> author_id === id end)}
+  end
+
   def get_post(_parent, %{id: id}, _info), do: {:ok, Blog.get_post!(id)}
 
   def create_post(_parent, %{post: post}, _info) do
