@@ -90,25 +90,7 @@ defmodule BlogGraphqlApi.Blog do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_post(%Post{} = post) do
-    Repo.delete(post)
-  end
-
-  @doc """
-  Deletes a post by id.
-
-  ## Examples
-
-      iex> delete_post_by_id(id)
-      {:ok, %Post{}}
-
-      iex> delete_post_by_id(id)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_post_by_id(id) do
-    get_post!(id) |> Repo.delete()
-  end
+  def delete_post(%Post{} = post), do: Repo.delete(post)
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking post changes.

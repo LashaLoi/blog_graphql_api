@@ -1,4 +1,4 @@
-defmodule BlogGraphqlApiWeb.AuthorResolver do
+defmodule BlogGraphqlApiWeb.Resolvers.Author do
   alias BlogGraphqlApi.User
 
   def register(_parent, params, _info) do
@@ -11,9 +11,7 @@ defmodule BlogGraphqlApiWeb.AuthorResolver do
     end
   end
 
-  def list_author(_parent, _params, _info) do
-    {:ok, User.list_author()}
-  end
+  def authors(parent, params, _info), do: {:ok, User.list_author(params)}
 
   def get_author(_parent, %{id: id}, _info), do: {:ok, User.authorize(id)}
   def get_author(%{author_id: author_id}, _params, _info), do: {:ok, User.authorize(author_id)}

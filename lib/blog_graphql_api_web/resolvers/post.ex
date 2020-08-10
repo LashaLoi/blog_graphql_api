@@ -1,4 +1,4 @@
-defmodule BlogGraphqlApiWeb.BlogResolver do
+defmodule BlogGraphqlApiWeb.Resolvers.Post do
   alias BlogGraphqlApi.Blog
 
   def list_post(_parent, %{limit: limit, offset: offset}, _info),
@@ -6,8 +6,12 @@ defmodule BlogGraphqlApiWeb.BlogResolver do
 
   def list_post(_parent, _params, _info), do: {:ok, Blog.list_post()}
 
-  def list_post_by_id(%{id: id}, _paranm, _info) do
-    {:ok, Blog.list_post() |> Enum.filter(fn %{author_id: author_id} -> author_id === id end)}
+  def list_post_by_id(%{id: id}, _params, _info) do
+    posts =
+      Blog.list_post()
+      |> Enum.filter(fn %{author_id: author_id} -> author_id === id end)
+
+    {:ok, posts}
   end
 
   def get_post(_parent, %{id: id}, _info), do: {:ok, Blog.get_post!(id)}
@@ -33,7 +37,9 @@ defmodule BlogGraphqlApiWeb.BlogResolver do
   end
 
   def delete_post(_parent, %{id: id}, _info) do
-    case Blog.delete_post_by_id(id) do
+    post = Blog.get_post!(id)
+
+    case Blog.delete_post(post) do
       {:ok, _} ->
         {:ok, true}
 

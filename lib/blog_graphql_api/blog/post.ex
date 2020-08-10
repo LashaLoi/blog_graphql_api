@@ -2,12 +2,12 @@ defmodule BlogGraphqlApi.Blog.Post do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @required_fields [:title, :description, :author, :likes, :id]
+  @required_fields [:title, :description, :author, :id]
 
   schema "post" do
     field :author, :string
     field :description, :string
-    field :likes, :integer
+    field :likes, :integer, default: 0
     field :title, :string
     field :author_id, :id
 
@@ -17,7 +17,7 @@ defmodule BlogGraphqlApi.Blog.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, @required_fields)
+    |> cast(attrs, [:likes | @required_fields])
     |> validate_required(@required_fields)
   end
 end

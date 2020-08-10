@@ -1,12 +1,14 @@
 defmodule BlogGraphqlApi.User do
   import Ecto.Query, warn: false
-  alias BlogGraphqlApi.Repo
 
+  alias BlogGraphqlApi.Repo
   alias BlogGraphqlApi.User.Author
 
-  def list_author do
-    Repo.all(Author)
+  def list_author(%{limit: limit, offset: offset}) do
+    Author |> limit(^limit) |> offset(^offset) |> Repo.all()
   end
+
+  def list_author(_parent), do: Repo.all(Author)
 
   def authorize(id), do: Repo.get!(Author, id)
 
@@ -22,9 +24,7 @@ defmodule BlogGraphqlApi.User do
     |> Repo.update()
   end
 
-  def delete_author(%Author{} = author) do
-    Repo.delete(author)
-  end
+  def delete_author(%Author{} = author), do: Repo.delete(author)
 
   def change_author(%Author{} = author) do
     Author.changeset(author, %{})
