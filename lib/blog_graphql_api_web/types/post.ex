@@ -1,7 +1,7 @@
 defmodule BlogGraphqlApiWeb.Types.Post do
   use Absinthe.Schema.Notation
 
-  alias BlogGraphqlApiWeb.Resolvers.Author
+  alias BlogGraphqlApiWeb.Resolvers.{Author, Comment}
 
   object :post do
     field :id, :id |> non_null
@@ -15,6 +15,10 @@ defmodule BlogGraphqlApiWeb.Types.Post do
       arg(:offset, :integer)
 
       resolve(&Author.authors/3)
+    end
+
+    field :comments, :comment |> list_of do
+      resolve(&Comment.list_comment_by_id/3)
     end
   end
 end
