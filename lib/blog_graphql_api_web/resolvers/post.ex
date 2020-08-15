@@ -1,18 +1,18 @@
 defmodule BlogGraphqlApiWeb.Resolvers.Post do
   alias BlogGraphqlApi.Blog
 
-  def list_post(_parent, %{limit: limit, offset: offset}, _info),
+  def list_post(_parent, %{limit: limit, offset: offset}, _ctx),
     do: {:ok, Blog.list_post(limit, offset)}
 
-  def list_post(_parent, _params, _info), do: {:ok, Blog.list_post()}
+  def list_post(_parent, _params, _ctx), do: {:ok, Blog.list_post()}
 
-  def list_post_by_id(%{id: id}, _params, _info) do
+  def list_post_by_id(%{id: id}, _params, _ctx) do
     {:ok, Blog.list_post_by_id(id)}
   end
 
-  def get_post(_parent, %{id: id}, _info), do: {:ok, Blog.get_post!(id)}
+  def get_post(_parent, %{id: id}, _ctx), do: {:ok, Blog.get_post!(id)}
 
-  def create_post(_parent, %{post: post}, _info) do
+  def create_post(_parent, %{post: post}, _ctx) do
     case Blog.create_post(post) do
       {:ok, post} ->
         {:ok, post}
@@ -22,7 +22,7 @@ defmodule BlogGraphqlApiWeb.Resolvers.Post do
     end
   end
 
-  def update_post(_parent, %{id: id, post: post}, _info) do
+  def update_post(_parent, %{id: id, post: post}, _ctx) do
     case Blog.update_post(Blog.get_post!(id), post) do
       {:ok, post} ->
         {:ok, post}
@@ -32,7 +32,7 @@ defmodule BlogGraphqlApiWeb.Resolvers.Post do
     end
   end
 
-  def delete_post(_parent, %{id: id}, _info) do
+  def delete_post(_parent, %{id: id}, _ctx) do
     with post <- Blog.get_post!(id), {:ok, _} <- Blog.delete_post(post) do
       {:ok, true}
     else

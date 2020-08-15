@@ -1,7 +1,7 @@
 defmodule BlogGraphqlApiWeb.Resolvers.Author do
   alias BlogGraphqlApi.User
 
-  def register(_parent, params, _info) do
+  def register(_parent, params, _ctx) do
     case User.register(params) do
       {:ok, author} ->
         {:ok, author}
@@ -11,7 +11,7 @@ defmodule BlogGraphqlApiWeb.Resolvers.Author do
     end
   end
 
-  def authors(_parent, params, _info), do: {:ok, User.list_author(params)}
+  def authors(_parent, params, _ctx), do: {:ok, User.list_author(params)}
 
   def get_author(_parent, %{id: id}, %{context: %{current_user: current_user}}) do
     current_user |> IO.inspect()
@@ -19,7 +19,7 @@ defmodule BlogGraphqlApiWeb.Resolvers.Author do
     {:ok, User.authorize(id)}
   end
 
-  def get_author(%{author_id: author_id}, _params, _info) do
+  def get_author(%{author_id: author_id}, _params, _ctx) do
     {:ok, User.authorize(author_id)}
   end
 end
