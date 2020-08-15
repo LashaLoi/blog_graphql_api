@@ -13,6 +13,13 @@ defmodule BlogGraphqlApiWeb.Resolvers.Author do
 
   def authors(_parent, params, _info), do: {:ok, User.list_author(params)}
 
-  def get_author(_parent, %{id: id}, _info), do: {:ok, User.authorize(id)}
-  def get_author(%{author_id: author_id}, _params, _info), do: {:ok, User.authorize(author_id)}
+  def get_author(_parent, %{id: id}, %{context: %{current_user: current_user}}) do
+    current_user |> IO.inspect()
+
+    {:ok, User.authorize(id)}
+  end
+
+  def get_author(%{author_id: author_id}, _params, _info) do
+    {:ok, User.authorize(author_id)}
+  end
 end
