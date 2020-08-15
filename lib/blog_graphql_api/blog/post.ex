@@ -2,8 +2,6 @@ defmodule BlogGraphqlApi.Blog.Post do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @required_fields [:title, :description, :author, :id]
-
   schema "post" do
     field :author, :string
     field :description, :string
@@ -14,6 +12,7 @@ defmodule BlogGraphqlApi.Blog.Post do
     timestamps()
   end
 
+  @required_fields [:title, :description, :author, :author_id]
   @doc false
   def changeset(post, attrs) do
     post

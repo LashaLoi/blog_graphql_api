@@ -3,10 +3,8 @@ defmodule BlogGraphqlApiWeb.Resolvers.Comment do
 
   def list_comment(_parent, _params, _info), do: {:ok, Comment.list_message()}
 
-  def list_comment_by_id(%{id: post_id}, _parent, _info) do
-    comments = Comment.list_message() |> Enum.filter(fn %{post_id: id} -> id === post_id end)
-
-    {:ok, comments}
+  def list_comment_by_id(%{id: id}, _parent, _info) do
+    {:ok, Comment.list_message_by_id(id)}
   end
 
   def create_comment(_parent, params, _info) do

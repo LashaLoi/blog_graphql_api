@@ -9,10 +9,12 @@ defmodule BlogGraphqlApi.Comment.Message do
     timestamps()
   end
 
+  @required_fields [:text, :post_id]
+
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:text, :post_id])
-    |> validate_required([:text, :post_id])
+    |> cast(attrs, @required_fields)
+    |> validate_required(@required_fields)
   end
 end

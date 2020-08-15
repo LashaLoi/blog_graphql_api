@@ -4,6 +4,7 @@ defmodule BlogGraphqlApiWeb.Queries.Author do
   alias BlogGraphqlApiWeb.Resolvers.Author
 
   import_types(BlogGraphqlApiWeb.Types.Author)
+  import_types(BlogGraphqlApiWeb.Inputs.Author)
 
   object :author_queries do
     @desc "Get author by id"
@@ -22,9 +23,7 @@ defmodule BlogGraphqlApiWeb.Queries.Author do
   object :author_mutations do
     @desc "Register author"
     field :register, :author do
-      arg(:first_name, :string |> non_null)
-      arg(:last_name, :string |> non_null)
-      arg(:age, :integer |> non_null)
+      arg(:author, :create_author_input)
 
       resolve(&Author.register/3)
     end
